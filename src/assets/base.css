@@ -1,0 +1,31 @@
+/* Configurações básicas de estilo */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+:root {
+  --background-app: #fff;
+  --content-app: #00234b;
+  --border-app: #d8d8da;
+}
+
+html {
+  overflow-y: auto !important;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background-app);
+  font-family: "Inter", sans-serif;
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+  outline: 0;
+  background: inherit;
+}
