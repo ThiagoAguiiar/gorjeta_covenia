@@ -53,7 +53,7 @@ import useMoney from "@/stores/useMoney";
 
 import type { IModels } from "@/types/model";
 
-import { computed, defineProps, ref, watch, type PropType } from "vue";
+import { computed, ref, watch, type PropType } from "vue";
 import { debounce } from "lodash";
 
 const money = useMoney();
