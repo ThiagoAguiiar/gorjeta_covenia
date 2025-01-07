@@ -53,9 +53,7 @@ const getCurrency = computed(() => {
 
 watch(
   () => models.value.toggleCurrency,
-  (value) => {
-    models.value.currency = value ? "dollar" : "euro";
-  }
+  (value) => (models.value.currency = value ? "dollar" : "euro")
 );
 
 watch(
