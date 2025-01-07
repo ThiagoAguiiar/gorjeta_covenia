@@ -34,9 +34,10 @@
 </template>
 
 <script lang="ts" setup>
+import FormField from "./form-field.vue";
+
 import type { IModels } from "@/types/model";
 import { computed, ref, watch, type PropType } from "vue";
-import FormField from "./form-field.vue";
 
 const props = defineProps({
   modelValue: {
