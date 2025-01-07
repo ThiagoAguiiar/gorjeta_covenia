@@ -57,7 +57,7 @@ import { debounce } from "lodash";
 
 const money = useMoney();
 
-const totalBRL = ref("0,00");
+const totalBRL = ref("R$ 0,00");
 const loading = ref(false);
 
 const props = defineProps({
@@ -83,8 +83,8 @@ const getCurrency = computed(() => {
 
 // Valor Total
 const totalPayment = computed(() => {
-  const valor = Number(props.data.paymentValue.toString().replace(",", "."));
-  return (Number(valor) + Number(totalTip.value)).toFixed(2);
+  const valor = Number(props.data.paymentValue);
+  return (valor + Number(totalTip.value)).toFixed(2);
 });
 
 // Gorjeta
@@ -101,12 +101,15 @@ const totalPerPerson = computed(() => {
 const getTotalBRL = async () => {
   loading.value = true;
 
-  const { data } = await money.convertMoney(
+  const { data, error } = await money.convertMoney(
     totalPerPerson.value,
     props.data.currency
   );
 
   if (data.value) totalBRL.value = data.value;
+  else totalBRL.value = "Valor não encontrado";
+
+  if (error.value) totalBRL.value = "Erro ao buscar conversão";
 
   loading.value = false;
 };
@@ -114,11 +117,11 @@ const getTotalBRL = async () => {
 // Cria um atraso para a chamada da API reduzindo consumo de dados
 const debouncedGetTotalBRL = debounce(getTotalBRL, 500);
 
-/* Uso do deep para observar as alterações mais profundas no objeto getCurrency */
+/* Uso do immediate para chamar a função assim que a página é renderizada mesmo que não haja alteração de valores */
 watch(
-  () => [totalPerPerson, getCurrency],
-  async () => debouncedGetTotalBRL,
-  { deep: true }
+  () => [totalPerPerson.value, getCurrency.value],
+  async () => await debouncedGetTotalBRL(),
+  { immediate: true }
 );
 </script>
 
@@ -145,11 +148,16 @@ watch(
   margin: 0.5rem 0;
 }
 
+.results-data p {
+  color: var(--hint-app);
+  font-size: 15px;
+}
+
 .real {
   color: #fca311;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1290px) {
   .results-item {
     font-size: 1.5rem;
   }

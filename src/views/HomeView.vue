@@ -55,8 +55,7 @@ import BaseLayout from "@/layouts/BaseLayout.vue";
 import FormCalculator from "@/components/forms/form-calculator.vue";
 
 // Responsividade (remover ou mostrar o elemento mobile)
-const media = useMediaQuery("(max-width: 768px)");
-const showMobile = ref(false);
+const showMobile = useMediaQuery("(max-width: 1290px)");
 const tabs = ref("calculator");
 
 const models = reactive<IModels>({
@@ -65,14 +64,6 @@ const models = reactive<IModels>({
   tip: 10,
   peopleCount: 2,
   toggleCurrency: false,
-});
-
-onMounted(() => {
-  showMobile.value = media.value;
-});
-
-watch(media, (value) => {
-  showMobile.value = value;
 });
 
 const navigateTab = (tab: "results" | "calculator") => {
@@ -102,17 +93,21 @@ const navigateTab = (tab: "results" | "calculator") => {
   display: none;
 }
 
+/* O DEEP Permite estilizar componentes profundos no DOM (principalmente componentes de bibliotecas externas) */
+:deep(.v-btn__content) {
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
 @media (max-width: 1290px) {
   .home {
     grid-template-columns: 100%;
   }
 
   .form {
-    border-right: 0px;
+    border-right: 0;
   }
-}
 
-@media (max-width: 768px) {
   .results,
   .form {
     padding: 1rem 0.5rem;

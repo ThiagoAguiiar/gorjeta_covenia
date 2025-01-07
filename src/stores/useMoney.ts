@@ -9,7 +9,7 @@ export default defineStore("useMoney", () => {
   const convertMoney = async (value: string, to: "euro" | "dollar") => {
     if (Number(value) === 0 || value.length === 0) {
       data.value = "0,00";
-      
+
       return { data, error };
     }
 
@@ -28,7 +28,7 @@ export default defineStore("useMoney", () => {
 
       const json: ISuccessResponse = await response.json();
 
-      // retorna o valor formatado para BRL
+      // Retorna o valor formatado para BRL
       data.value = new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
