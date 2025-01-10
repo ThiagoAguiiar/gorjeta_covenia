@@ -1,15 +1,24 @@
 import { type ISuccessResponse } from "@/types/api";
+import type { IModels } from "@/types/model";
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 
 export default defineStore("useMoney", () => {
   const data = ref<string | null>("R$ 0,00");
   const error = ref<string | null>(null);
 
+  const models = reactive<IModels>({
+    currency: "euro",
+    paymentValue: 0,
+    peopleCount: 2,
+    tip: 10,
+    toggleCurrency: false,
+  });
+
   const convertMoney = async (value: string, to: "euro" | "dollar") => {
     if (Number(value) === 0 || value.length === 0 || isNaN(Number(value))) {
       data.value = "R$ 0,00";
-      
+
       return { data, error };
     }
 
@@ -43,5 +52,6 @@ export default defineStore("useMoney", () => {
 
   return {
     convertMoney,
+    models,
   };
 });

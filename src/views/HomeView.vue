@@ -1,34 +1,26 @@
 <template>
   <BaseLayout>
     <div class="home" v-if="!showMobile">
-      <FormCalculator :data="models" />
-      <ResultPanel :data="models" />
+      <FormCalculator :data="money.models" />
+      <ResultPanel :data="money.models" />
     </div>
 
-    <Mobile :data="models" v-else />
+    <Mobile :data="money.models" v-else />
   </BaseLayout>
 </template>
 
 <script lang="ts" setup>
-import { reactive } from "vue";
-import type { IModels } from "@/types/model";
 import { useMediaQuery } from "@vueuse/core";
 
 import Mobile from "@/components/Mobile.vue";
 import ResultPanel from "@/components/forms/ResultPanel.vue";
 import BaseLayout from "@/layouts/BaseLayout.vue";
 import FormCalculator from "@/components/forms/FormCalculator.vue";
+import useMoney from "@/stores/useMoney";
 
 // Responsividade (remover ou mostrar o elemento mobile)
 const showMobile = useMediaQuery("(max-width: 1290px)");
-
-const models = reactive<IModels>({
-  currency: "euro",
-  paymentValue: 0,
-  tip: 10,
-  peopleCount: 2,
-  toggleCurrency: false,
-});
+const money = useMoney();
 </script>
 
 <style scoped>
