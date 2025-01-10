@@ -3,13 +3,13 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export default defineStore("useMoney", () => {
-  const data = ref<string | null>("0");
+  const data = ref<string | null>("R$ 0,00");
   const error = ref<string | null>(null);
 
   const convertMoney = async (value: string, to: "euro" | "dollar") => {
-    if (Number(value) === 0 || value.length === 0) {
-      data.value = "0,00";
-
+    if (Number(value) === 0 || value.length === 0 || isNaN(Number(value))) {
+      data.value = "R$ 0,00";
+      
       return { data, error };
     }
 
@@ -22,24 +22,23 @@ export default defineStore("useMoney", () => {
 
       const response = await fetch(url);
 
-      if (!response.ok) {
-        throw new Error("Falha na requisição");
-      }
+      if (!response.ok) throw new Error("Falha na requisição");
 
       const json: ISuccessResponse = await response.json();
-
-      // Retorna o valor formatado para BRL
-      data.value = new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      }).format(json.conversion_result);
+      data.value = formatMoney(json.conversion_result);
 
       return { data, error };
-    } catch (err) {
-      error.value =
-        "Erro ao converter moeda. Verifique os dados e tente novamente";
+    } catch (err: any) {
+      error.value = err.toString();
       return { data, error };
     }
+  };
+
+  const formatMoney = (value: number) => {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value);
   };
 
   return {

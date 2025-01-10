@@ -1,62 +1,26 @@
 <template>
   <BaseLayout>
     <div class="home" v-if="!showMobile">
-      <FormCalculator v-model="models" />
+      <FormCalculator :data="models" />
       <ResultPanel :data="models" />
     </div>
 
-    <div class="home" v-else>
-      <VTabs v-model="tabs" align-tabs="center">
-        <VTab value="calculator">Calculadora</VTab>
-        <VTab value="results">Resultados</VTab>
-      </VTabs>
-
-      <VTabsWindow v-model="tabs">
-        <VTabsWindowItem value="calculator">
-          <FormCalculator v-model="models" />
-
-          <div class="btn-tab__container">
-            <button class="btn-tab" @click="navigateTab('results')">
-              <Icon
-                icon="fluent:chevron-right-24-regular"
-                width="22px"
-                color="white"
-              />
-            </button>
-          </div>
-        </VTabsWindowItem>
-
-        <VTabsWindowItem value="results">
-          <ResultPanel :data="models" />
-
-          <div class="btn-tab__container">
-            <button class="btn-tab" @click="navigateTab('calculator')">
-              <Icon
-                icon="fluent:chevron-left-24-regular"
-                width="22px"
-                color="white"
-              />
-            </button>
-          </div>
-        </VTabsWindowItem>
-      </VTabsWindow>
-    </div>
+    <Mobile :data="models" v-else />
   </BaseLayout>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref, watch } from "vue";
+import { reactive } from "vue";
 import type { IModels } from "@/types/model";
 import { useMediaQuery } from "@vueuse/core";
-import { Icon } from "@iconify/vue";
 
-import ResultPanel from "@/components/forms/result-panel.vue";
+import Mobile from "@/components/Mobile.vue";
+import ResultPanel from "@/components/forms/ResultPanel.vue";
 import BaseLayout from "@/layouts/BaseLayout.vue";
-import FormCalculator from "@/components/forms/form-calculator.vue";
+import FormCalculator from "@/components/forms/FormCalculator.vue";
 
 // Responsividade (remover ou mostrar o elemento mobile)
 const showMobile = useMediaQuery("(max-width: 1290px)");
-const tabs = ref("calculator");
 
 const models = reactive<IModels>({
   currency: "euro",
@@ -65,10 +29,6 @@ const models = reactive<IModels>({
   peopleCount: 2,
   toggleCurrency: false,
 });
-
-const navigateTab = (tab: "results" | "calculator") => {
-  tabs.value = tab;
-};
 </script>
 
 <style scoped>

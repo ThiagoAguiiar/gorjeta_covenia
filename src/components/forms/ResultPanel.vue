@@ -3,53 +3,45 @@
     <h2 class="results-title">Conta</h2>
 
     <div class="results-wrapper">
-      <div class="results-data">
-        <p>Tipo da Moeda</p>
-        <span class="results-item">
-          {{ getCurrency.name }}
-        </span>
-      </div>
+      <ResultBox label="Tipo de Moeda" :result="getCurrency.name" />
 
-      <div class="results-data">
-        <p>Valor da Conta ({{ getCurrency.symbol }})</p>
-        <span class="results-item">
-          {{ getCurrency.symbol }} {{ Number(data.paymentValue).toFixed(2) }}
-        </span>
-      </div>
+      <ResultBox
+        label="Valor da Conta"
+        :result="Number(data.paymentValue).toFixed(2).toString()"
+        :symbol="getCurrency.symbol"
+      />
 
-      <div class="results-data">
-        <p>Valor da Gorjeta ({{ getCurrency.symbol }})</p>
-        <span class="results-item">
-          {{ getCurrency.symbol }} {{ totalTip }}
-        </span>
-      </div>
+      <ResultBox
+        label="Valor da Gorjeta"
+        :result="totalTip"
+        :symbol="getCurrency.symbol"
+      />
 
-      <div class="results-data">
-        <p>Valor Total ({{ getCurrency.symbol }})</p>
-        <span class="results-item">
-          {{ getCurrency.symbol }} {{ totalPayment }}
-        </span>
-      </div>
+      <ResultBox
+        label="Valor Total"
+        :result="totalPayment"
+        :symbol="getCurrency.symbol"
+      />
 
-      <div class="results-data">
-        <p>Valor da conta por Pessoa ({{ getCurrency.symbol }})</p>
-        <span class="results-item">
-          {{ getCurrency.symbol }} {{ totalPerPerson }}
-        </span>
-      </div>
+      <ResultBox
+        label="Valor da Conta por Pessoa"
+        :result="totalPerPerson"
+        :symbol="getCurrency.symbol"
+      />
 
-      <div class="results-data">
-        <p>Valor da conta por Pessoa (R$)</p>
-        <span class="results-item real">
-          {{ loading ? "Carregando..." : totalBRL }}</span
-        >
-      </div>
+      <ResultBox
+        class="real"
+        label="Valor da Conta por Pessoa"
+        :result="loading ? 'Carregando...' : totalBRL"
+        symbol="R$"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import useMoney from "@/stores/useMoney";
+import ResultBox from "./ResultBox.vue";
 
 import type { IModels } from "@/types/model";
 
@@ -65,6 +57,12 @@ const props = defineProps({
   data: {
     type: Object as PropType<IModels>,
     required: true,
+    default: () => ({
+      currency: "euro",
+      paymentValue: 0,
+      peopleCount: 1,
+      tip: 0,
+    }),
   },
 });
 
@@ -140,32 +138,7 @@ watch(
   margin-top: 2rem;
 }
 
-.results-item {
-  font-weight: 700;
-  font-size: 1.8rem;
-}
-
-.results-data {
-  margin: 0.5rem 0;
-}
-
-.results-data p {
-  color: var(--hint-app);
-  font-size: 15px;
-}
-
 .real {
   color: #fca311;
-}
-
-@media (max-width: 1290px) {
-  .results-item {
-    font-size: 1.5rem;
-  }
-
-  .results-data p,
-  .results-title {
-    font-size: 1rem;
-  }
 }
 </style>

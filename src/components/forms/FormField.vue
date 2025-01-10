@@ -27,6 +27,7 @@
         <VTextField
           v-model="value"
           :type="type"
+          :min="type === 'number' && 0"
           color="blue-darken-4"
           @update:model-value="updateValue"
           hide-details
@@ -81,7 +82,7 @@ const props = defineProps({
     default: "text",
   },
   hint: {
-    type: Array as PropType<Array<string> | String>,
+    type: [Array, String] as PropType<Array<string> | string>,
     default: "",
   },
   rangeMinMax: {

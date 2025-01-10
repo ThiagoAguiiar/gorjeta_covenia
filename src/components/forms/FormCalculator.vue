@@ -34,19 +34,19 @@
 </template>
 
 <script lang="ts" setup>
-import FormField from "./form-field.vue";
+import FormField from "./FormField.vue";
 
 import type { IModels } from "@/types/model";
 import { computed, ref, watch, type PropType } from "vue";
 
 const props = defineProps({
-  modelValue: {
+  data: {
     type: Object as PropType<IModels>,
     required: true,
   },
 });
 
-const models = ref(props.modelValue);
+const models = ref(props.data);
 
 const getCurrency = computed(() => {
   return models.value.currency === "euro" ? "€" : "$";
@@ -58,7 +58,7 @@ watch(
 );
 
 watch(
-  () => props.modelValue,
+  () => props.data,
   (value) => (models.value = value)
 );
 </script>
