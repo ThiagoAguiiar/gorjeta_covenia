@@ -33,7 +33,6 @@
         class="real"
         label="Valor da Conta por Pessoa"
         :result="loading ? 'Carregando...' : totalBRL"
-        symbol="R$"
       />
     </div>
   </div>

@@ -3,14 +3,11 @@
     <slot name="label" class="results-item">
       <p>
         {{ label }}
-        <span v-if="symbol"> ({{ symbol }})</span>
       </p>
     </slot>
 
     <slot name="result">
-      <span class="results-item">
-        {{ result }}
-      </span>
+      <span class="results-item"> {{ symbol }} {{ result }} </span>
     </slot>
   </div>
 </template>
